@@ -18,10 +18,16 @@ public class StockTrader {
     private static final Scanner scanner = new Scanner(System.in);
     private static final AlgorithmManager algManager = AlgorithmManager.getInstance();
     private static volatile boolean viewUpdates = false;
+    private static volatile boolean csvFormat = false;
     private static volatile boolean isScanning = false;
+    public static final Timer timer = new Timer();
 
     public static boolean getViewUpdates() {
         return viewUpdates;
+    }
+
+    public static boolean getCsvFormat() {
+        return csvFormat;
     }
 
     public static boolean getIsScanning() {
@@ -55,8 +61,7 @@ public class StockTrader {
 
     public static void main(String[] args) {
         Logger.getRootLogger().setLevel(Level.OFF);
-        Timer timer = new Timer();
-        timer.schedule(new printUpdate(), 0, 10000);
+        timer.schedule(new PrintUpdate(), 0, 5000);
         System.out.println();
         getInitialBalance();
         while (true) {
@@ -161,6 +166,26 @@ public class StockTrader {
                     break;
                 }
                 case "e": {
+                    if (csvFormat) {
+                        csvFormat = false;
+                        System.out.println("CSV format disabled.");
+                    } else {
+                        csvFormat = true;
+                        System.out.println("CSV format enabled.");
+
+                        StringBuilder printout = new StringBuilder();
+                        printout.append("Timestamp,Net");
+                        var bots = new ArrayList<>(SingleStockBot.getActiveBots());
+                        bots.sort(String::compareTo);
+                        for (var id : bots) {
+                            printout.append(",").append(id);
+                        }
+
+                        System.out.println(printout);
+                    }
+                    break;
+                }
+                case "f": {
                     System.exit(0);
                     return;
                 }
@@ -171,7 +196,10 @@ public class StockTrader {
 
             }
         }
+    }
 
+    public static String getTimestampFormatted() {
+        return "[" + getTimestamp() + "]";
     }
 
     public static String getTimestamp() {
@@ -180,7 +208,7 @@ public class StockTrader {
 
         if (timestamp.length() == 21) timestamp += "00";
         else if (timestamp.length() == 22) timestamp += "0";
-        return "[" + timestamp + "]";
+        return timestamp;
     }
 
     private static void botOperations(SingleStockBot bot) {
@@ -272,7 +300,8 @@ public class StockTrader {
         System.out.println("[b] Manage a bot");
         System.out.println("[c] View account breakdown");
         System.out.println("[d] Toggle live updates");
-        System.out.println("[e] Exit (will not save)");
+        System.out.println("[e] Toggle CSV format of live updates");
+        System.out.println("[f] Exit (will not save)");
         System.out.println();
         isScanning = false;
     }

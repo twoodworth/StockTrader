@@ -2,6 +2,7 @@ package bots;
 
 import algorithms.Algorithm;
 import algorithms.AlgorithmAnalyzer;
+import stockTrader.PrintUpdate;
 import stockTrader.StockTrader;
 import yahoofinance.Stock;
 import yahoofinance.quotes.stock.StockQuote;
@@ -137,6 +138,7 @@ public class SingleStockBot {
 
 
     public void buy(int amount) {
+        if (amount == 0) return;
         var price = getQuote().getPrice();
         var cost = price.multiply(BigDecimal.valueOf(amount));
         var tempCash = cash;
@@ -148,11 +150,16 @@ public class SingleStockBot {
         shares = tempShares;
 
         if (StockTrader.getViewUpdates() && !StockTrader.getIsScanning()) {
-            System.out.println(StockTrader.getTimestamp() + "\t\t\t\t\t\tBOUGHT " + amount + " " + id + " shares for $" + StockTrader.bigDecimalToString(cost, 2) + " ($" + StockTrader.bigDecimalToString(price, 2) + " each)");
+            if (StockTrader.getCsvFormat()) {
+                new PrintUpdate().run();
+            } else {
+                System.out.println(StockTrader.getTimestampFormatted() + "\t\t\t\t\t\tBOUGHT " + amount + " " + id + " shares for $" + StockTrader.bigDecimalToString(cost, 2) + " ($" + StockTrader.bigDecimalToString(price, 2) + " each)");
+            }
         }
     }
 
     public void sell(int amount) {
+        if (amount == 0) return;
         var price = getQuote().getPrice();
         var cost = price.multiply(BigDecimal.valueOf(amount));
         var tempCash = cash;
@@ -164,7 +171,11 @@ public class SingleStockBot {
         shares = tempShares;
 
         if (StockTrader.getViewUpdates() && !StockTrader.getIsScanning()) {
-            System.out.println(StockTrader.getTimestamp() + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSOLD " + amount + " " + id + " shares for $" + StockTrader.bigDecimalToString(cost, 2) + " ($" + StockTrader.bigDecimalToString(price, 2) + " each)");
+            if (StockTrader.getCsvFormat()) {
+                new PrintUpdate().run();
+            } else {
+                System.out.println(StockTrader.getTimestampFormatted() + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSOLD " + amount + " " + id + " shares for $" + StockTrader.bigDecimalToString(cost, 2) + " ($" + StockTrader.bigDecimalToString(price, 2) + " each)");
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DayTradeB extends Algorithm {
+public class NoShortsOld extends Algorithm {
 
     private volatile boolean boughtLastTick = false;
     private volatile boolean soldLastTick = false;
@@ -99,8 +99,12 @@ public class DayTradeB extends Algorithm {
             if (minimumComparison <= 0 && avgPriceComparison < 0 && (avgChangeDirection <= 0 || prevSoldLastTick)) {
                 var amount = cash.divide(price, 2, RoundingMode.FLOOR).toBigInteger();
                 var intAmount = Integer.parseInt(amount.toString());
-                bot.buy(intAmount);
-                boughtLastTick = true;
+                if (intAmount > 0) {
+                    bot.buy(intAmount);
+                    boughtLastTick = true;
+                } else {
+                    boughtLastTick = false;
+                }
             } else {
                 boughtLastTick = false;
             }
@@ -116,11 +120,11 @@ public class DayTradeB extends Algorithm {
 
     @Override
     public String getId() {
-        return "B";
+        return "NO";
     }
 
     @Override
     public String getDescription() {
-        return "Constantly day trades and may sell at a loss.";
+        return "Constantly day trades and never short sells.";
     }
 }

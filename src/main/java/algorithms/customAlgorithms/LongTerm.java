@@ -15,14 +15,16 @@ public class LongTerm extends Algorithm {
         if (cash.compareTo(price) > 0) {
             var amount = cash.divide(price, 2, RoundingMode.FLOOR).toBigInteger();
             var intAmount = Integer.parseInt(amount.toString());
-            bot.buy(intAmount);
+            if (intAmount > 0) {
+                bot.buy(intAmount);
+            }
         }
     }
 
 
     @Override
     public String getId() {
-        return "L";
+        return "LT";
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DayTradeC extends Algorithm {
+public class ShortsOld extends Algorithm {
 
     private volatile boolean boughtLastTick = false;
     private volatile boolean soldLastTick = false;
@@ -88,7 +88,7 @@ public class DayTradeC extends Algorithm {
 
         var sellAmount = shares + Math.max(0, Integer.parseInt(cash.add(price.multiply(BigDecimal.valueOf(shares))).multiply(BigDecimal.valueOf(0.5)).divide(price, 2, RoundingMode.FLOOR).toBigInteger().toString()));
         var prevSoldLastTick = soldLastTick;
-        if (prevPriceComparison > 0 && avgPriceComparison > 0 && (avgChangeDirection >= 0 || boughtLastTick)) {
+        if (sellAmount != 0 && prevPriceComparison > 0 && avgPriceComparison > 0 && (avgChangeDirection >= 0 || boughtLastTick)) {
             bot.sell(sellAmount);
             soldLastTick = true;
         } else {
@@ -99,8 +99,12 @@ public class DayTradeC extends Algorithm {
         if (minimumComparison <= 0 && avgPriceComparison < 0 && (avgChangeDirection <= 0 || prevSoldLastTick)) {
             var amount = cash.divide(price, 2, RoundingMode.FLOOR).toBigInteger();
             var intAmount = Integer.parseInt(amount.toString());
-            bot.buy(intAmount);
-            boughtLastTick = true;
+            if (intAmount > 0) {
+                bot.buy(intAmount);
+                boughtLastTick = true;
+            } else {
+                boughtLastTick = false;
+            }
         } else {
             boughtLastTick = false;
         }
@@ -113,11 +117,11 @@ public class DayTradeC extends Algorithm {
 
     @Override
     public String getId() {
-        return "C";
+        return "SO";
     }
 
     @Override
     public String getDescription() {
-        return "Constantly day trades and will short sell.";
+        return "Constantly day trades and short sells (using old algorithm).";
     }
 }
