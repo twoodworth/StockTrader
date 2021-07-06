@@ -67,7 +67,7 @@ public class DayTradeA extends Algorithm {
     }
 
     @Override
-    public void analyze() {
+    protected void analyze() {
         var bot = super.getBot();
         var cash = bot.getCash();
         var shares = bot.getShares();

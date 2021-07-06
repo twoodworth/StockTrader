@@ -54,6 +54,11 @@ public class SingleStockBot {
         return paused;
     }
 
+    /**
+     * Removes the bot from the system, effectively deleting it. When removed,
+     * all shares are immediately sold for cash, and all cash is transferred into
+     * the user's main balance.
+     */
     public void remove() {
         setPaused(true);
         sell(shares);
@@ -92,6 +97,12 @@ public class SingleStockBot {
         return quote;
     }
 
+    /**
+     * Automatically pauses the bot. While paused, the bot will
+     * not buy, sell, or analyze stocks.
+     *
+     * @param paused: The value to set this#paused to.
+     */
     public void setPaused(boolean paused) {
         this.paused = paused;
     }

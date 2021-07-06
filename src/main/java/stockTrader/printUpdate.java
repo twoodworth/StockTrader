@@ -1,14 +1,13 @@
 package stockTrader;
 
 import bots.SingleStockBot;
-import stockTrader.StockTrader;
 
 import java.util.ArrayList;
 import java.util.TimerTask;
 
-public class PrintNetWorth extends TimerTask {
+public class printUpdate extends TimerTask {
 
-    public PrintNetWorth() {
+    public printUpdate() {
     }
 
     @Override

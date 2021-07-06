@@ -56,7 +56,7 @@ public class StockTrader {
     public static void main(String[] args) {
         Logger.getRootLogger().setLevel(Level.OFF);
         Timer timer = new Timer();
-        timer.schedule(new PrintNetWorth(), 0, 5000);
+        timer.schedule(new printUpdate(), 0, 10000);
         System.out.println();
         getInitialBalance();
         while (true) {
@@ -86,7 +86,7 @@ public class StockTrader {
                         isScanning = false;
                         break;
                     }
-                    System.out.println("Choose a trading algorithm: ");
+                    System.out.println("Select a trading algorithm for " + name + ": ");
                     algManager.printAlgorithms();
                     var algorithm = algManager.getAlgorithm(scanner.next());
                     if (algorithm == null) {

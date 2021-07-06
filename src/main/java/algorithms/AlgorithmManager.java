@@ -36,7 +36,7 @@ public class AlgorithmManager {
                         var id = alg.getId();
                         var desc = alg.getDescription();
                         if (algorithms.containsKey(id)) {
-                            System.out.println("Error: Duplicate algorithm IDs");
+                            System.out.println("Error: Duplicate algorithm ID '" + id + "'");
                         } else {
                             algorithms.put(id, constructor);
                             descriptions.put(id, desc);
