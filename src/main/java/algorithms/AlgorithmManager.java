@@ -28,27 +28,31 @@ public class AlgorithmManager {
         var classes = getClasses();
         for (var clazz : classes) {
             try {
-                var constructor = ((Class<Algorithm>) clazz).getConstructor();
-                var instance = constructor.newInstance();
-                var id = instance.getId();
-                var desc = instance.getDescription();
-                if (algorithms.containsKey(id)) {
-                    System.out.println("Error: Duplicate algorithm IDs");
+                if (clazz != null) {
+                    var constructor = clazz.getConstructor();
+                    var instance = constructor.newInstance();
+                    if (instance instanceof Algorithm) {
+                        var alg = (Algorithm) instance;
+                        var id = alg.getId();
+                        var desc = alg.getDescription();
+                        if (algorithms.containsKey(id)) {
+                            System.out.println("Error: Duplicate algorithm IDs");
+                        } else {
+                            algorithms.put(id, constructor);
+                            descriptions.put(id, desc);
+                        }
+                    } else {
+                        System.out.println("Error: Custom algorithm class is not instanceof Algorithm");
+                    }
                 } else {
-                    algorithms.put(id, constructor);
-                    descriptions.put(id, desc);
+                    System.out.println("Error: Custom algorithm class is null");
                 }
-            } catch (InstantiationException e) {
+            } catch (InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                System.out.println("Error: Cannot access custom algorithm constructor.");
             } catch (NoSuchMethodException e) {
-                System.out.println("");
                 System.out.println("Error: Custom algorithm does not have a valid constructor.");
-                System.out.println("(Constructor must not have any arguments)");
-                System.exit(0);
             }
         }
     }
@@ -58,11 +62,7 @@ public class AlgorithmManager {
             var constructor = algorithms.get(id);
             if (constructor == null) return null;
             return constructor.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;

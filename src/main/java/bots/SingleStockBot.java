@@ -136,7 +136,7 @@ public class SingleStockBot {
         tempShares += amount;
         shares = tempShares;
 
-        if (StockTrader.viewUpdates && !StockTrader.isScanning) {
+        if (StockTrader.getViewUpdates() && !StockTrader.getIsScanning()) {
             System.out.println(StockTrader.getTimestamp() + "\t\t\t\t\t\tBOUGHT " + amount + " " + id + " shares for $" + StockTrader.bigDecimalToString(cost, 2) + " ($" + StockTrader.bigDecimalToString(price, 2) + " each)");
         }
     }
@@ -152,7 +152,7 @@ public class SingleStockBot {
         tempShares -= amount;
         shares = tempShares;
 
-        if (StockTrader.viewUpdates && !StockTrader.isScanning) {
+        if (StockTrader.getViewUpdates() && !StockTrader.getIsScanning()) {
             System.out.println(StockTrader.getTimestamp() + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSOLD " + amount + " " + id + " shares for $" + StockTrader.bigDecimalToString(cost, 2) + " ($" + StockTrader.bigDecimalToString(price, 2) + " each)");
         }
     }

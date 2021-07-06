@@ -17,8 +17,16 @@ public class StockTrader {
     private static volatile BigDecimal balance = BigDecimal.ZERO;
     private static final Scanner scanner = new Scanner(System.in);
     private static final AlgorithmManager algManager = AlgorithmManager.getInstance();
-    public static volatile boolean viewUpdates = false;
-    public static volatile boolean isScanning = false;
+    private static volatile boolean viewUpdates = false;
+    private static volatile boolean isScanning = false;
+
+    public static boolean getViewUpdates() {
+        return viewUpdates;
+    }
+
+    public static boolean getIsScanning() {
+        return isScanning;
+    }
 
     public static void setBalance(BigDecimal amount) {
         balance = amount;

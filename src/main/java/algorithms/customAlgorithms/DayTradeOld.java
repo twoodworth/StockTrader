@@ -11,7 +11,6 @@ public class DayTradeOld extends Algorithm {
 
     public volatile BigDecimal previous = null;
     private volatile BigDecimal lastBuyPrice = null;
-    private final ArrayList<BigDecimal> historicalChanges5Min = new ArrayList<>();
     private final ArrayList<BigDecimal> historicalPrices5Min = new ArrayList<>();
     private final ArrayList<Long> historicalTimestamps5Min = new ArrayList<>();
     private final ArrayList<BigDecimal> historicalPrices20S = new ArrayList<>();
@@ -27,10 +26,8 @@ public class DayTradeOld extends Algorithm {
         var old1Min = currentTimestamp - 20000L;
         while (historicalTimestamps5Min.size() > 0 && historicalTimestamps5Min.get(0) < old5Min) {
             var historical5Min = historicalPrices5Min.get(0);
-            var historical5MinChange = historicalChanges5Min.get(0);
             historicalTimestamps5Min.remove(0);
             historicalPrices5Min.remove(0);
-            historicalChanges5Min.remove(0);
             var total = cur5MinTotal;
             total = total.subtract(historical5Min);
             cur5MinTotal = total;
@@ -44,7 +41,6 @@ public class DayTradeOld extends Algorithm {
         cur5MinTotal = total;
         historicalTimestamps5Min.add(currentTimestamp);
         historicalPrices5Min.add(price);
-        historicalChanges5Min.add(price.subtract(previous));
         historicalTimestamps20S.add(currentTimestamp);
         historicalPrices20S.add(price);
     }

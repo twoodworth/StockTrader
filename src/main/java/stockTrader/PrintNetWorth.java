@@ -25,7 +25,7 @@ public class PrintNetWorth extends TimerTask {
         }
 
         printout.insert(0, StockTrader.getTimestamp() + " Net: $" + StockTrader.bigDecimalToString(net, 2));
-        if (StockTrader.viewUpdates && !StockTrader.isScanning) {
+        if (StockTrader.getViewUpdates() && !StockTrader.getIsScanning()) {
             System.out.println(printout);
         }
     }

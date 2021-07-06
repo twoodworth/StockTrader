@@ -15,11 +15,11 @@ public abstract class Algorithm {
         }
     }
 
-    public SingleStockBot getBot() {
+    protected SingleStockBot getBot() {
         return bot;
     }
 
-    public abstract void analyze();
+    abstract void analyze();
 
     /**
      * Returns the algorithm ID.
