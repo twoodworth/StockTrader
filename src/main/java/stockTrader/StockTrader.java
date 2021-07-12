@@ -61,7 +61,7 @@ public class StockTrader {
 
     public static void main(String[] args) {
         Logger.getRootLogger().setLevel(Level.OFF);
-        timer.schedule(new PrintUpdate(), 0, 5000);
+        timer.schedule(new PrintUpdate(), 0, 1000);
         System.out.println();
         getInitialBalance();
         while (true) {
